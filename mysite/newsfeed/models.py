@@ -5,7 +5,7 @@ from django.db import models
 
 # Create your models here.
 class Source(models.Model):
-    source_id = models.AutoField(primary_key=True)
+    source_id = models.CharField(max_length=30, primary_key=True)
     source_name = models.CharField(max_length=30)
     score_count = models.PositiveIntegerField()
     score_sum = models.PositiveIntegerField()
@@ -22,4 +22,3 @@ class BiasScore(models.Model):
     #user = models.ForeignKey(User)
     article = models.ForeignKey(Article)
     score = models.PositiveIntegerField()
-    
