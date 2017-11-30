@@ -7,9 +7,9 @@ from django.db import models
 class Source(models.Model):
     source_id = models.CharField(max_length=30, primary_key=True)
     source_name = models.CharField(max_length=30)
-    score_count = models.PositiveIntegerField()
-    score_sum = models.PositiveIntegerField()
-    score_average = models.DecimalField(max_digits=3, decimal_places=2)
+    score_count = models.PositiveIntegerField(default=0)
+    score_sum = models.PositiveIntegerField(default=0)
+    score_average = models.DecimalField(max_digits=3, decimal_places=2, default=0)
 
 class Article(models.Model):
     article_id = models.AutoField(primary_key=True)
