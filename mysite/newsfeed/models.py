@@ -14,9 +14,9 @@ class Source(models.Model):
 class Article(models.Model):
     article_id = models.AutoField(primary_key=True)
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
-    article_name = models.CharField(max_length=100)
-    score_count = models.PositiveIntegerField()
-    score_sum = models.PositiveIntegerField()
+    article_name = models.CharField(max_length=300)
+    score_count = models.PositiveIntegerField(default=0)
+    score_sum = models.PositiveIntegerField(default=0)
 
 class BiasScore(models.Model):
     #user = models.ForeignKey(User)

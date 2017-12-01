@@ -15,11 +15,17 @@ def get_headlines():
         title = article['title']
         url = article['url']
 
-        count = Source.objects.filter(source_id=source_id).count()
+        source = Source.objects.filter(source_id=source_id)
+        count = source.count()
         if count == 0:
-            source = Source(source_id=source_id, source_name=source_name)
-            source.save()
-         
+            source_object= Source(source_id=source_id, source_name=source_name)
+            source_object.save()
+
+        article_object = Article(article_name=title)
+        article_source = Source.objects.get(source_id=source_id) 
+        article_object.source = article_source
+        article_object.save()
+
         articles.append(
             {
                 "source_id": source_id,
