@@ -21,10 +21,12 @@ def get_headlines():
             source_object= Source(source_id=source_id, source_name=source_name)
             source_object.save()
 
-        article_object = Article(article_name=title)
-        article_source = Source.objects.get(source_id=source_id) 
-        article_object.source = article_source
-        article_object.save()
+        article_count = Article.objects.filter(article_name=title)
+        if article_count == 0:
+            article_object = Article(article_name=title)
+            article_source = Source.objects.get(source_id=source_id) 
+            article_object.source = article_source
+            article_object.save()
 
         articles.append(
             {
