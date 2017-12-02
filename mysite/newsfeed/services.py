@@ -35,4 +35,7 @@ def get_headlines():
                 "url": url
             }
         )
+    """
+    TODO: Sort articles based on source bias score before returning
+    """
     return articles
