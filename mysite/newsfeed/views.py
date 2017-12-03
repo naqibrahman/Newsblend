@@ -17,3 +17,9 @@ def index(request):
         'article_list': article_list,
     }
     return render(request, 'newsfeed/index.html', context)
+
+def profile(request):
+	context = {
+		'user': request.user,
+	}
+	return render(request, 'newsfeed/profile.html', context)
