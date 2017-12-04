@@ -10,11 +10,15 @@ import temp_list
 
 
 def index(request):
+	context = {}
+	return render(request, 'newsfeed/index.html', context)
+
+def newsfeed(request):
     article_list = temp_list.articles
     context = {
         'article_list': article_list,
     }
-    return render(request, 'newsfeed/index.html', context)
+    return render(request, 'newsfeed/newsfeed.html', context)
 
 def profile(request):
 	context = {
