@@ -102,3 +102,6 @@ ENV/
 
 # vscode
 .vscode/
+
+# scripts
+mysite/run_get_headlines

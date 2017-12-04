@@ -39,5 +39,7 @@ def get_headlines():
     TODO: Sort articles based on source bias score before returning
     """
     return articles
+
 def __main__():
-	get_headlines()
+    print "test"
+    get_headlines()
