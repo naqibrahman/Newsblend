@@ -6,13 +6,11 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from django.template import loader
-import services
 import temp_list 
 
 
 def index(request):
     article_list = temp_list.articles
-    #article_list = services.get_headlines
     context = {
         'article_list': article_list,
     }
