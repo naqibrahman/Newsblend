@@ -25,8 +25,9 @@ class Command(BaseCommand):
                 source_object= Source(source_id=source_id, source_name=source_name)
                 source_object.save()
 
-            article_count = Article.objects.filter(article_name=title)
+            article_count = Article.objects.filter(article_name=title).count()
             if article_count == 0:
+                print "test"
                 article_object = Article(article_name=title)
                 article_source = Source.objects.get(source_id=source_id) 
                 article_object.source = article_source
