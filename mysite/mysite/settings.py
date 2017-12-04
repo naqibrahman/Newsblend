@@ -28,8 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = '/newsfeed/profile/'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/newsfeed'
+LOGIN_REDIRECT_URL = '/newsfeed'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login'
 
 
 # Application definition
