@@ -12,7 +12,7 @@ import temp_list
 
 def index(request):
     article_list = temp_list.articles
-    #article_list = services.get_headlines
+    article_list = services.get_headlines
     context = {
         'article_list': article_list,
     }
