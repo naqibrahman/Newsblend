@@ -31,10 +31,10 @@
     <h1> NEWSBLEND </h1>
     {% if article_list %}
     <ul>
-    <pre><div> &lt;BIAS&gt; &#9;<u> ARTICLE TITLE </u></div></pre>
+    <pre><div><u> HEADLINES</u></div></pre>
     {% for article in article_list %}
         <div class="article title">
-          <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'" > <pre><b><{{ article.bias_level }}></b> &#9; <u>{{ article.title }}</u></pre></button>
+          <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'" > <pre><b> <u>{{ article.title }}</u></pre></button>
           <br> </br>
 
           <div id="{{ article.id|safe }}" class="w3-modal">
