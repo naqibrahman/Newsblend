@@ -31,10 +31,10 @@
     <h1> NEWSBLEND </h1>
     {% if article_list %}
     <ul>
-    <pre><div><u> HEADLINES</u></div></pre>
+    <pre><div> &lt;BIAS&gt; &#9;<u> HEADLINE </u></div></pre>
     {% for article in article_list %}
         <div class="article title">
-          <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'" > <pre><b> <u>{{ article.title }}</u></pre></button>
+          <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'" > <pre><b><{{ article.source_bias }}></b> &#9; <u>{{ article.title }}</u></pre></button>
           <br> </br>
 
           <div id="{{ article.id|safe }}" class="w3-modal">
@@ -43,6 +43,22 @@
                 <span onclick="document.getElementById('{{ article.id|safe }}').style.display='none'" class="w3-button w3-display-topright">&times;</span>
                 <h1> {{ article.title }} </h1>
                 {{ article.text|safe }}
+                <form>
+                    <select>
+                        <option value="-5">-5 (very left)</option>
+                        <option value="-4">-4</option>
+                        <option value="-3">-3</option>
+                        <option value="-2">-2</option>
+                        <option value="-1">-1</option>
+                        <option value="0" selected>0 (neutral)</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 (very right)</option>
+                      </select>
+                      <input type="submit">
+                </form>
               </div>
             </div>
           </div>
