@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'newsblend',
         'USER': 'adnan',
         'PASSWORD': '',
-        'HOST': '35.196.92.170 ',
+        'HOST': '35.227.123.60',
         'PORT': '5432',
     }
 }
