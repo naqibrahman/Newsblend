@@ -25,3 +25,9 @@ def profile(request):
 		'user': request.user,
 	}
 	return render(request, 'newsfeed/profile.html', context)
+
+def news_page(request, article):
+	print(article)
+	context = {}
+	return render(request, 'newsfeed/news_page.html', context)
+
