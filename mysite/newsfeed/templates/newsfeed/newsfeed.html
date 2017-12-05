@@ -1,12 +1,69 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" /> 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">    
+
+    <title>NEWSBLEND</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <style>
+    h1 { 
+        display: block;
+        font-size: 2em;
+        font-weight: bold;
+        text-align: center;
+        border: double;
+        border-color: blue;
+    }
+    pre>button{
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        text-align: left;
+        color: blue;
+
+    }
+    </style>
 </head>
+
 <body>
+    <h1> NEWSBLEND </h1>
     {% if article_list %}
     <ul>
+    <pre><div> &lt;BIAS&gt; &#9;<u> HEADLINE </u></div></pre>
     {% for article in article_list %}
-        <li><a href="#">{{ article.title }}</a></li>
+        <div class="article title">
+          <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'" > <pre><b><{{ article.source_bias }}></b> &#9; <u>{{ article.title }}</u></pre></button>
+          <br> </br>
+
+          <div id="{{ article.id|safe }}" class="w3-modal">
+            <div class="w3-modal-content">
+              <div class="w3-container">
+                <span onclick="document.getElementById('{{ article.id|safe }}').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h1> {{ article.title }} </h1>
+                {{ article.text|safe }}
+                <form>
+                    <select>
+                        <option value="-5">-5 (very left)</option>
+                        <option value="-4">-4</option>
+                        <option value="-3">-3</option>
+                        <option value="-2">-2</option>
+                        <option value="-1">-1</option>
+                        <option value="0" selected>0 (neutral)</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5 (very right)</option>
+                      </select>
+                      <input type="submit">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
     {% endfor %}
     </ul>
     {% else %}
