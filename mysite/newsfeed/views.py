@@ -6,8 +6,9 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from django.template import loader
-import temp_list 
+import temp_list
 from newsfeed.models import Source, Article
+from scraper import scrape
 
 def index(request):
 	context = {}
@@ -17,7 +18,11 @@ def newsfeed(request):
 	article_list = temp_list.articles
 	for article in article_list:
 		article['source_bias'] = float(Source.objects.get(source_id=article['source_id']).score_average)
-
+	#	article['text']= "".join(scrape(article["url"]))
+	# for artice in article_list:
+	# 	##IF in memcache: export it
+	# 	#else:
+	# 
 	article_list.sort(key=lambda article: abs(article['source_bias']))
 
 	context = {
@@ -37,3 +42,7 @@ def news_page(request, article):
 	context = {}
 	return render(request, 'newsfeed/news_page.html', context)
 
+def article(request, articleId):
+
+	content = filter( lambda article: article["id"] == articleId, temp_list.articles)
+	return HttpResponse(scrape(content[0]['url']))

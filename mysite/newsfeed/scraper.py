@@ -12,7 +12,7 @@ def scrape(url):
         ptags = soup.find_all('p');
         data = [str(p) for p in ptags]
         data = [ text.replace('\n','') for text in data]
-    except:
+    except EnvironmentError:
           data = ["There was an error retrieving this site"]
     return data
 
