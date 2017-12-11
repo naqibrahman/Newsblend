@@ -5,7 +5,7 @@ from temp_list import articles
 
 URLS = [ article["url"] for article in articles]
 def scrape(url):
-    #try:
+    try:
         mysession = requests.Session()
         mysession.mount('https://', MyAdapter())
         headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -14,11 +14,9 @@ def scrape(url):
         ptags = soup.find_all('p');
         data = [str(p) for p in ptags]
         data = [ text.replace('\n','') for text in data]
-    #return data
-    #except:
-
-    #      data = ["There was an error retrieving this site"]
-    #return data
+    except:
+         data = ["There was an error retrieving this site"]
+    return data
 
 def testrun():
     x = [ scrape(url) for url in URLS]
