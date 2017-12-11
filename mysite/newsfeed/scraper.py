@@ -1,7 +1,16 @@
 from bs4 import BeautifulSoup
 import requests
 from temp_list import articles
-#TODO: Error Handling
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
+import ssl
+
+class MyAdapter(HTTPAdapter):
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       ssl_version=ssl.PROTOCOL_TLSv1)
 
 URLS = [ article["url"] for article in articles]
 def scrape(url):
@@ -15,7 +24,8 @@ def scrape(url):
         data = [str(p) for p in ptags]
         data = [ text.replace('\n','') for text in data]
     except:
-         data = ["There was an error retrieving this site"]
+       data = ["<h2>There was an error retrieving this site<h2>"]
+       
     return data
 
 def testrun():
