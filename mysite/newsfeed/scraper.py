@@ -24,7 +24,7 @@ def scrape(url):
         data = [str(p) for p in ptags]
         data = [ text.replace('\n','') for text in data]
     except:
-       data = ["<h2>There was an error retrieving this site<h2>"]
+       data = ["<h3>There was an error retrieving this site</h3>"]
        
     return data
 

@@ -5,15 +5,24 @@
     <title>NEWSBLEND</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/css?family=News+Cycle" rel="stylesheet">
 
     <style>
-    h1 { 
+    .row {
+        background-color:rgba(156, 156, 156, 0.356); 
+    }
+    h1{
+        font-size: 3em;
+        font-family: 'News Cycle', sans-serif;
+
+    }
+    h2 { 
         display: block;
         font-size: 2em;
         font-weight: bold;
         text-align: center;
         border: double;
-        border-color: blue;
+        border-color: rgb(0, 0, 0);
     }
     pre>button{
         background-color: transparent;
@@ -27,7 +36,7 @@
     .loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
-    border-top: 16px solid #3498db;
+    border-top: 16px solid #737475;
     width: 120px;
     height: 120px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
@@ -56,46 +65,53 @@
 </head>
 
 <body>
-    <h1> NEWSBLEND </h1>
+    <div class="row text-center">
+            <div class = container>                    
+                <h1 id= "header"> NEWSBLEND </h1>
+                <h3><em>Where fake news goes to die</em></h3>
+            </div>          
+    </div>
     {% if article_list %}
     <ul>
-    <pre><div> &lt;BIAS&gt; &#9;<u> HEADLINE </u></div></pre>
-    {% for article in article_list %}
-        <div class="article title">
-          <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'"  class= "loadArticle {{ article.id|safe }}"> <pre><b><{{ article.source_bias }}></b> &#9; <u>{{ article.title }}</u></pre></button>
-          <br> </br>
+    <div class="container">
+        <pre><div> &lt;BIAS&gt; &#9;<u> HEADLINE </u></div></pre>
+        {% for article in article_list %}
+            <div class="article title">
+            <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'"  class= "loadArticle {{ article.id|safe }}"> <pre><b><{{ article.source_bias }}></b> &#9; <u>{{ article.title }}</u></pre></button>
+            <br> </br>
 
-          <div id="{{ article.id|safe }}" class="w3-modal">
-            <div class="w3-modal-content">
-              <div class="w3-container">
-                <span onclick="document.getElementById('{{ article.id|safe }}').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <h1> {{ article.title }} </h1>
-                <div id ="articleText_{{ article.id|safe }}" class= "loader"></div>
-                {{ article.text|safe }}
-                <form>
-                    <select>
-                        <option value="-5">-5 (very left)</option>
-                        <option value="-4">-4</option>
-                        <option value="-3">-3</option>
-                        <option value="-2">-2</option>
-                        <option value="-1">-1</option>
-                        <option value="0" selected>0 (neutral)</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5 (very right)</option>
-                      </select>
-                      <input type="submit">
-                </form>
-              </div>
+            <div id="{{ article.id|safe }}" class="w3-modal">
+                <div class="w3-modal-content">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('{{ article.id|safe }}').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <h2> {{ article.title }} </h2>
+                    <div id ="articleText_{{ article.id|safe }}" class= "loader"></div>
+                    {{ article.text|safe }}
+                    <form>
+                        <select>
+                            <option value="-5">-5 (very left)</option>
+                            <option value="-4">-4</option>
+                            <option value="-3">-3</option>
+                            <option value="-2">-2</option>
+                            <option value="-1">-1</option>
+                            <option value="0" selected>0 (neutral)</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5 (very right)</option>
+                        </select>
+                        <input type="submit">
+                    </form>
+                </div>
+                </div>
             </div>
-          </div>
-        </div>
+            </div>
 
-    {% endfor %}
-    </ul>
-    {% else %}
-    <p>No headlines are available.</p>
-    {% endif %}
+        {% endfor %}
+        </ul>
+        {% else %}
+        <p>No headlines are available.</p>
+        {% endif %}
+    </div>
 </body>
