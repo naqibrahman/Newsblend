@@ -10,6 +10,8 @@ function loadArticleText(){
                 console.log(req.responseText)
                 const textDiv = document.querySelector("#articleText_"+articleID)
                 textDiv.innerHTML =  req.responseText
+                textDiv.classList.toggle('loader')                
+                
             }
         })
         req.send();    
