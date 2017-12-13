@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render
+from django.core.cache import cache
+from django_redis import get_redis_connection
 
 # Create your views here.
 from django.http import HttpResponse
@@ -9,6 +11,7 @@ from django.template import loader
 import temp_list
 from newsfeed.models import Source, Article
 from scraper import scrape
+import json
 
 def index(request):
 	context = {}
@@ -25,8 +28,17 @@ def newsfeed(request):
 	# 
 	article_list.sort(key=lambda article: abs(article['source_bias']))
 
+	r = get_redis_connection("default")
+	#print(r.lrange("articles", 0, -1))
+	articles = r.lrange("articles", 0, -1)
+	for i in range(0, len(articles)):
+		articles[i] = json.loads(articles[i])
+	
+	articles.sort(key=lambda article: abs(article['source_bias']))
+	print articles[0]['url']
+
 	context = {
-    	'article_list': article_list,
+    	'article_list': articles,
     }
 	
 	return render(request, 'newsfeed/newsfeed.html', context)
@@ -43,6 +55,11 @@ def news_page(request, article):
 	return render(request, 'newsfeed/news_page.html', context)
 
 def article(request, articleId):
+	print articleId
+	r = get_redis_connection("default")
+	articles = r.lrange("articles", 0, -1)
+	for i in range(0, len(articles)):
+		articles[i] = json.loads(articles[i])
 
-	content = filter( lambda article: article["id"] == articleId, temp_list.articles)
+	content = filter( lambda article: article["id"] == int(articleId), articles)
 	return HttpResponse(scrape(content[0]['url']))

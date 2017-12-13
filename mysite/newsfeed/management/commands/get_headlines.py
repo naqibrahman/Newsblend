@@ -1,4 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.core.cache import cache
+from django_redis import get_redis_connection
 import requests
 import json
 import mysite.settings
@@ -32,14 +34,21 @@ class Command(BaseCommand):
                 article_object.source = article_source
                 article_object.save()
 
-            articles.append(
-                {
-                    "source_id": source_id,
-                    "title": title,
-                    "url": url
-                }
+            article_id = Article.objects.get(article_name=title).article_id
+            articles.append(json.dumps(
+                    {
+                        "source_id": source_id,
+                        "title": title,
+                        "url": url,
+                        "id":article_id,
+                        "source_bias": float(Source.objects.get(source_id=source_id).score_average)
+                    }
+                )
             )
         """
         TODO: Sort articles based on source bias score before returning
         """
         self.stdout.write(self.style.SUCCESS('Successfully retrieved headlines'))
+        r = get_redis_connection("default")
+        r.delete("articles")
+        r.lpush("articles", *articles)
