@@ -34,7 +34,6 @@ def newsfeed(request):
 		articles[i] = json.loads(articles[i])
 	
 	articles.sort(key=lambda article: abs(article['source_bias']))
-	print articles[0]['url']
 
 	context = {
     	'article_list': articles,
