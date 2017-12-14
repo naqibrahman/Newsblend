@@ -60,10 +60,10 @@ def article(request, articleId):
 		articles[i] = json.loads(articles[i])
 
 	article_url = filter( lambda article: article["id"] == int(articleId), articles)[0]['url']
-	article_content = r.get(article_url)
+	article_content = r.lrange(article_url, 0, -1)
 	if not article_content:
 		article_content = scrape(article_url)
-		r.set(article_url, article_content)
+		r.lpush(article_url, *article_content)
 		r.expire(article_url, 300)
 	return HttpResponse(article_content)
 
