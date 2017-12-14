@@ -29,7 +29,6 @@ def newsfeed(request):
 	article_list.sort(key=lambda article: abs(article['source_bias']))
 
 	r = get_redis_connection("default")
-	#print(r.lrange("articles", 0, -1))
 	articles = r.lrange("articles", 0, -1)
 	for i in range(0, len(articles)):
 		articles[i] = json.loads(articles[i])
@@ -55,11 +54,15 @@ def news_page(request, article):
 	return render(request, 'newsfeed/news_page.html', context)
 
 def article(request, articleId):
-	print articleId
 	r = get_redis_connection("default")
 	articles = r.lrange("articles", 0, -1)
 	for i in range(0, len(articles)):
 		articles[i] = json.loads(articles[i])
 
-	content = filter( lambda article: article["id"] == int(articleId), articles)
-	return HttpResponse(scrape(content[0]['url']))
+	article_url = filter( lambda article: article["id"] == int(articleId), articles)[0]['url']
+	article_content = r.get(article_url)
+	if not article_content:
+		article_content = scrape(article_url)
+		r.set(article_url, article_content)
+		r.expire(article_url, 300)
+	return HttpResponse(article_content)
