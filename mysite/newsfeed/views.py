@@ -8,87 +8,85 @@ from django_redis import get_redis_connection
 # Create your views here.
 from django.http import HttpResponse
 from django.template import loader
-import temp_list
 from django.contrib.auth.models import User
 from newsfeed.models import Source, Article, BiasScore
 from scraper import scrape
 import json
 
 def index(request):
-	context = {}
-	return render(request, 'newsfeed/index.html', context)
+    """
+    Renders index page
+    """
+    context = {}
+    return render(request, 'newsfeed/index.html', context)
 
 def newsfeed(request):
-	article_list = temp_list.articles
-	for article in article_list:
-		article['source_bias'] = float(Source.objects.get(source_id=article['source_id']).score_average)
-	#	article['text']= "".join(scrape(article["url"]))
-	# for artice in article_list:
-	# 	##IF in memcache: export it
-	# 	#else:
-	# 
-	article_list.sort(key=lambda article: abs(article['source_bias']))
-
-	r = get_redis_connection("default")
-	articles = r.lrange("articles", 0, -1)
-	for i in range(0, len(articles)):
-		articles[i] = json.loads(articles[i])
-	
-	articles.sort(key=lambda article: abs(article['source_bias']))
-
-	context = {
-    	'article_list': articles,
-    }
-	
-	return render(request, 'newsfeed/newsfeed.html', context)
+    """
+    Renders newsfeed page
+    Retrieves article headlines from Redis instance
+    """
+    r = get_redis_connection("default")
+    articles = r.lrange("articles", 0, -1)
+    for i in range(0, len(articles)):
+        articles[i] = json.loads(articles[i])
+    context = {
+        'article_list': articles,
+    }	
+    return render(request, 'newsfeed/newsfeed.html', context)
 
 def profile(request):
-	context = {
-		'user': request.user,
-	}
-	return render(request, 'newsfeed/profile.html', context)
-
-def news_page(request, article):
-	print(article)
-	context = {}
-	return render(request, 'newsfeed/news_page.html', context)
+    """
+    Renders profile page
+    """
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'newsfeed/profile.html', context)
 
 def article(request, articleId):
-	r = get_redis_connection("default")
-	articles = r.lrange("articles", 0, -1)
-	for i in range(0, len(articles)):
-		articles[i] = json.loads(articles[i])
+    """
+    Renders article page
+    Checks if article text is already in Redis
+    If not in Redis, stored in Redis for 5 minutes
+    """
+    r = get_redis_connection("default")
+    articles = r.lrange("articles", 0, -1)
+    for i in range(0, len(articles)):
+        articles[i] = json.loads(articles[i])
 
-	article_url = filter( lambda article: article["id"] == int(articleId), articles)[0]['url']
-	article_content = r.lrange(article_url, 0, -1)
-	if not article_content:
-		article_content = scrape(article_url)
-		r.lpush(article_url, *article_content)
-		r.expire(article_url, 300)
-	return HttpResponse(article_content)
+    article_url = filter(lambda article: article["id"] == int(articleId), articles)[0]['url'] #finds which article to render
+    article_content = r.lrange(article_url, 0, -1)
+    if not article_content:
+        article_content = scrape(article_url)
+        r.lpush(article_url, *article_content)
+        r.expire(article_url, 300)
+    return HttpResponse(article_content)
 
 def create_bias_score(request):
-	if request.method == 'POST':
-		score = request.POST.get('score')
-		article_id = request.POST.get('articleid')
-		current_user = request.user
-		user = User.objects.get(id=current_user.id)
-		article = Article.objects.get(article_id=article_id)
-		bias_score = BiasScore(score=score)
-		bias_score.user = user
-		bias_score.article = article
-		bias_score.save()
+    """
+    Writes user submitted bias score to database
+    """
+    if request.method == 'POST':
+        score = request.POST.get('score')
+        article_id = request.POST.get('articleid')
+        current_user = request.user
+        user = User.objects.get(id=current_user.id)
+        article_obj = Article.objects.get(article_id=article_id)
+        bias_score = BiasScore(score=score)
+        bias_score.user = user
+        bias_score.article = article_obj
+        bias_score.save()
 
-		"""
-		TODO redesign model or do these writes somewhere else to reduce number of writes per POST
-		"""
-		article.score_count = article.score_count + 1
-		article.score_sum = article.score_sum + int(score)
-		article.save()
+        """
+        TODO redesign model or do these writes somewhere else to reduce number of writes per POST
+        """
+        article_obj.score_count = article_obj.score_count + 1
+        article_obj.score_sum = article_obj.score_sum + int(score)
+        article_obj.save()
 
-		source = article.source
-		source.score_count = source.score_count + 1
-		source.score_sum = source.score_sum + int(score)
-		source.score_average = source.score_sum / source.score_count
-		source.save()
-		return HttpResponse("test")
+        source = article_obj.source
+        source.score_count = source.score_count + 1
+        source.score_sum = source.score_sum + int(score)
+        source.score_average = source.score_sum / source.score_count
+        source.save()
+        return HttpResponse("test")
