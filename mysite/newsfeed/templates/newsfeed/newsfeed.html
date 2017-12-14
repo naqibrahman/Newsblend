@@ -62,6 +62,7 @@
     </style>
 
     <script src = '/static/scraping.js'></script>
+    <script src = '/static/createBiasScore.js'></script>
 </head>
 
 <body>
@@ -87,8 +88,9 @@
                     <h2> {{ article.title }} </h2>
                     <div id ="articleText_{{ article.id|safe }}" class= "loader"></div>
                     {{ article.text|safe }}
-                    <form>
-                        <select>
+                    <form onsubmit="createBiasScore('{{article.id}}')">
+                        {% csrf_token %}
+                        <select id="biasScore">
                             <option value="-5">-5 (very left)</option>
                             <option value="-4">-4</option>
                             <option value="-3">-3</option>

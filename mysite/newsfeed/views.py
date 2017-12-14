@@ -9,7 +9,8 @@ from django_redis import get_redis_connection
 from django.http import HttpResponse
 from django.template import loader
 import temp_list
-from newsfeed.models import Source, Article
+from django.contrib.auth.models import User
+from newsfeed.models import Source, Article, BiasScore
 from scraper import scrape
 import json
 
@@ -66,3 +67,30 @@ def article(request, articleId):
 		r.set(article_url, article_content)
 		r.expire(article_url, 300)
 	return HttpResponse(article_content)
+
+def create_bias_score(request):
+	if request.method == 'POST':
+		score = request.POST.get('score')
+		article_id = request.POST.get('articleid')
+		current_user = request.user
+		user = User.objects.get(id=current_user.id)
+		article = Article.objects.get(article_id=article_id)
+		bias_score = BiasScore(score=score)
+		bias_score.user = user
+		bias_score.article = article
+		bias_score.save()
+
+		"""
+		TODO redesign model or do these writes somewhere else to reduce number of writes per POST
+		"""
+		article.score_count = article.score_count + 1
+		article.score_sum = article.score_sum + int(score)
+		article.save()
+
+		source = article.source
+		print source.source_id
+		source.score_count = source.score_count + 1
+		source.score_sum = source.score_sum + int(score)
+		source.score_average = source.score_sum / source.score_count
+		source.save()
+		return HttpResponse("test")

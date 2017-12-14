@@ -24,6 +24,6 @@ class Article(models.Model):
     score_sum = models.PositiveIntegerField(default=0)
 
 class BiasScore(models.Model):
-    user = models.ForeignKey(User)
-    article = models.ForeignKey(Article)
-    score = models.PositiveIntegerField()
+    user = models.ForeignKey(User, null=True)
+    article = models.ForeignKey(Article, null=True)
+    score = models.IntegerField()
