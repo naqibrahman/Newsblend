@@ -90,7 +90,7 @@
                     {{ article.text|safe }}
                     <form onsubmit="createBiasScore('{{article.id}}')">
                         {% csrf_token %}
-                        <select id="biasScore">
+                        <select id="biasScore-{{article.id}}">
                             <option value="-5">-5 (very left)</option>
                             <option value="-4">-4</option>
                             <option value="-3">-3</option>

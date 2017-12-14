@@ -87,7 +87,6 @@ def create_bias_score(request):
 		article.save()
 
 		source = article.source
-		print source.source_id
 		source.score_count = source.score_count + 1
 		source.score_sum = source.score_sum + int(score)
 		source.score_average = source.score_sum / source.score_count

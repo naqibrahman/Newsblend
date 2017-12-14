@@ -6,7 +6,7 @@ function getCookie(name) {
 
 function createBiasScore(articleId){
     var csrftoken = getCookie('csrftoken')    
-    var score = document.getElementById("biasScore").value;
+    var score = document.getElementById("biasScore-"+articleId).value;
     var req= new XMLHttpRequest();
     req.open('POST', 'createbiasscore/', true);
     req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
