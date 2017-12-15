@@ -105,4 +105,4 @@ ENV/
 
 # scripts
 mysite/run_get_headlines
-mysite/app.yaml
+httpd_env.sh
