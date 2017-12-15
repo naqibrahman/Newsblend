@@ -75,10 +75,10 @@
     {% if article_list %}
     <ul>
     <div class="container">
-        <pre><div> &lt;BIAS&gt; &#9;<u> HEADLINE </u></div></pre>
+        <pre><div><u> HEADLINE </u></div></pre>
         {% for article in article_list %}
             <div class="article title">
-            <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'"  class= "loadArticle {{ article.id|safe }}"> <pre><b><{{ article.source_bias }}></b> &#9; <u>{{ article.title }}</u></pre></button>
+            <button onclick="document.getElementById('{{ article.id|safe }}').style.display='block'"  class= "loadArticle {{ article.id|safe }}"> <pre><u>{{ article.title }}</u></pre></button>
             <br> </br>
 
             <div id="{{ article.id|safe }}" class="w3-modal">
