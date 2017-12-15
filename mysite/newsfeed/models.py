@@ -13,7 +13,7 @@ class Source(models.Model):
     source_id = models.CharField(max_length=30, primary_key=True)
     source_name = models.CharField(max_length=30)
     score_count = models.PositiveIntegerField(default=0)
-    score_sum = models.PositiveIntegerField(default=0)
+    score_sum = models.IntegerField(default=0)
     score_average = models.DecimalField(max_digits=3, decimal_places=2, default=0)
 
 class Article(models.Model):
@@ -21,9 +21,9 @@ class Article(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
     article_name = models.CharField(max_length=300)
     score_count = models.PositiveIntegerField(default=0)
-    score_sum = models.PositiveIntegerField(default=0)
+    score_sum = models.IntegerField(default=0)
 
 class BiasScore(models.Model):
-    user = models.ForeignKey(User, null = True)
-    article = models.ForeignKey(Article, null = True)
-    score = models.PositiveIntegerField()
+    user = models.ForeignKey(User, null=True)
+    article = models.ForeignKey(Article, null=True)
+    score = models.IntegerField()
