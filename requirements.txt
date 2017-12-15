@@ -1,0 +1,6 @@
+Django==1.11.7
+psycopg2==2.7.3.2
+requests==2.18.4
+beautifulsoup4==4.6.0
+django-allauth==0.34.0
+django-redis==4.8.0
