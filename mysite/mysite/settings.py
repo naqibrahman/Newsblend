@@ -90,15 +90,15 @@ DATABASES = {
         'NAME': 'newsblend',
         'USER': 'adnan',
         'PASSWORD': '',
-        'HOST': '35.227.123.60',
-        'PORT': '5432',
+        'HOST': os.environ['POSTGRES_HOST'],
+        'PORT': os.environ['POSTGRES_PORT'],
     }
 }
 
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379:1",
+        "LOCATION": os.environ['REDIS_LOCATION'],
     }
 }
 
